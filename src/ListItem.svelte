@@ -13,7 +13,27 @@
     export let highlighted = false;
     export let displayMode = 'simple';
     export let imageColumn = null;
+    export let descriptionTemplate = null; 
     export let emailColumn = null;
+
+  const getFromOption = (key) => {
+    if (!key) return "";
+    // Intenta en option[key], option.row[key] o dentro de option.value/label
+    if (option && key in option) return option[key] ?? "";
+    if (option?.row && key in option.row) return option.row[key] ?? "";
+    if (key === "value" && "value" in option) return option.value ?? "";
+    if (key === "label" && "label" in option) return option.label ?? "";
+    return "";
+  };
+
+  // Reemplaza {{campo}} por el valor encontrado en option/option.row
+  const renderPreviewDescription = () => {
+    if (!descriptionTemplate) return "";
+    return descriptionTemplate.replace(/\{\{\s*([\w.\-]+)\s*\}\}/g, (_, k) => {
+      const v = getFromOption(k);
+      return (v === null || v === undefined) ? "" : String(v);
+    }).replace(/\s+/g, " ").trim();
+  };
 
     const dispatch = createEventDispatcher();
     // create a reactive declaration to update the `isSelected` variable
@@ -129,6 +149,15 @@
                     <span class="primary-text">{option[labelColumn]}</span>
                     {#if emailColumn && option[emailColumn]}
                         <span class="secondary-text">{option[emailColumn]}</span>
+                    {/if}
+
+                    <!-- NUEVO: descripción secundaria según plantilla -->
+                    {#if descriptionTemplate}
+                        {#if renderPreviewDescription()}
+                        <div class="secondary-text">
+                            {renderPreviewDescription()}
+                        </div>
+                        {/if}
                     {/if}
                 </div>
             </div>
