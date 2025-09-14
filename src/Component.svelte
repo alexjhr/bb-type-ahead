@@ -35,6 +35,7 @@
   let bindedField = optionsType === 'relationship' ? relationship : optionsType === 'fields' ? field : optionsType === 'array' ? array : null;
   let type = optionsType === 'relationship' ? 'relationship' : optionsType === 'array' ? 'array' : 'string';
 
+  export let descriptionTemplate;
   export let searchOptionsType;
   export let fieldFilters;
   export let searchRelationship;
@@ -362,11 +363,7 @@
             [valueColumn]: row[valueColumn]
           };
           
-          // Add additional fields for rich display
-          if (displayMode === 'rich') {
-            if (imageColumn) result[imageColumn] = row[imageColumn];
-            if (emailColumn) result[emailColumn] = row[emailColumn];
-          }
+  
           
           return result;
         });
@@ -494,6 +491,7 @@
                           imageColumn={imageColumn}
                           emailColumn={emailColumn}
                           on:select={() => selectOption()}
+                          previewDescriptionTemplate={descriptionTemplate}
                         />
                        {/each}
                        
