@@ -170,6 +170,11 @@
             "key": "valueColumn"
           },
           {
+            "type": "string",
+            "label": "Vista previa: plantilla de descripción",
+            "key": "descriptionTemplate"
+          },
+          {
             "type": "select",
             "label": "Display Mode",
             "key": "displayMode",
